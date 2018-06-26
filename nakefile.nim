@@ -42,33 +42,33 @@ task "build", "Builds the client for the current platform":
     else: nil
   createDir("_dlls")
   withDir "src":
-    direShell(["nimble", "c", ".."/"src"/"stub.nim", "-o:.."/"_dlls"/libFile])
+    direShell(["nimble", "c", ".."/"src"/"stub.nim", "-o:.."/"_dlls"/libFile, "--threads:off", "--tlsEmulation:off"])
 
 task "build-android", "Builds the client for android-arm platform":
   genGodotApi()
   createDir("_dlls")
   withDir "src":
     putEnv("ANDROID_TOOLCHAIN", "/opt/android-ndk-r14b/toolchains/x86-4.9/prebuilt/darwin-x86_64")
-    direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/libnim_android-x86.so", "--os:linux -d:android --cpu:i386"])
+    direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/libnim_android-x86.so", "--os:linux -d:android --cpu:i386 --threads:off --tlsEmulation:off"])
   #withDir "src":
   #  putEnv("ANDROID_TOOLCHAIN", "/opt/android-ndk-r14b/toolchains/x86_64-4.9/prebuilt/darwin-x86_64")
-  #  direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/libnim_android-x86_64.so", "--os:linux -d:android --cpu:amd64"])
+  #  direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/libnim_android-x86_64.so", "--os:linux -d:android --cpu:amd64 --threads:off --tlsEmulation:off"])
   withDir "src":
     putEnv("ANDROID_TOOLCHAIN", "/opt/android-ndk-r14b/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64")
-    direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/libnim_android-arm.so", "--os:linux -d:android --cpu:arm"])
+    direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/libnim_android-arm.so", "--os:linux -d:android --cpu:arm --threads:off --tlsEmulation:off"])
   withDir "src":
     putEnv("ANDROID_TOOLCHAIN", "/opt/android-ndk-r14b/toolchains/aarch64-linux-android-4.9/prebuilt/darwin-x86_64")
-    direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/libnim_android-arm64.so", "--os:linux -d:android --cpu:arm64"])
+    direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/libnim_android-arm64.so", "--os:linux -d:android --cpu:arm64 --threads:off --tlsEmulation:off"])
 
 task "build-ios", "Builds the client for iphone-arm platform":
   genGodotApi()
   var libFile = "nim_ios_64.dylib"
   createDir("_dlls")
   withDir "src":
-    direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/"&libFile, "--os:macosx -d:ios --cpu:arm64"])
+    direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/"&libFile, "--os:macosx -d:ios --cpu:arm64 --threads:off --tlsEmulation:off"])
   libFile = "nim_ios_32.dylib"
   withDir "src":
-    direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/"&libFile, "--os:macosx -d:ios --cpu:arm"])
+    direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/"&libFile, "--os:macosx -d:ios --cpu:arm --threads:off --tlsEmulation:off"])
   #withDir "_dll":
   #  direShell(["lipo", "-create -output nim_ios.dylib nim_ios_64.dylib nim_ios_32.dylib"])
 
