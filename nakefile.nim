@@ -46,13 +46,19 @@ task "build", "Builds the client for the current platform":
 
 task "build-android", "Builds the client for android-arm platform":
   genGodotApi()
-  let libFile = "libnim_android.so"
   createDir("_dlls")
   withDir "src":
+    putEnv("ANDROID_TOOLCHAIN", "/opt/android-ndk-r14b/toolchains/x86-4.9/prebuilt/darwin-x86_64")
+    direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/libnim_android-x86.so", "--os:linux -d:android --cpu:i386"])
+  #withDir "src":
+  #  putEnv("ANDROID_TOOLCHAIN", "/opt/android-ndk-r14b/toolchains/x86_64-4.9/prebuilt/darwin-x86_64")
+  #  direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/libnim_android-x86_64.so", "--os:linux -d:android --cpu:amd64"])
+  withDir "src":
     putEnv("ANDROID_TOOLCHAIN", "/opt/android-ndk-r14b/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64")
-    direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/"&libFile, "--os:android --cpu:arm"])
-    #putEnv("ANDROID_TOOLCHAIN", "/opt/android-ndk-r14b/toolchains/llvm/prebuilt/darwin-x86_64")
-    #direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/"&libFile, "--os:linux -d:android --cpu:arm"])
+    direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/libnim_android-arm.so", "--os:linux -d:android --cpu:arm"])
+  withDir "src":
+    putEnv("ANDROID_TOOLCHAIN", "/opt/android-ndk-r14b/toolchains/aarch64-linux-android-4.9/prebuilt/darwin-x86_64")
+    direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/libnim_android-arm64.so", "--os:linux -d:android --cpu:arm64"])
 
 task "build-ios", "Builds the client for iphone-arm platform":
   genGodotApi()
