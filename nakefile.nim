@@ -44,6 +44,28 @@ task "build", "Builds the client for the current platform":
   withDir "src":
     direShell(["nimble", "c", ".."/"src"/"stub.nim", "-o:.."/"_dlls"/libFile])
 
+task "build-android", "Builds the client for android-arm platform":
+  genGodotApi()
+  let libFile = "libnim_android.so"
+  createDir("_dlls")
+  withDir "src":
+    putEnv("ANDROID_TOOLCHAIN", "/opt/android-ndk-r14b/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64")
+    direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/"&libFile, "--os:android --cpu:arm"])
+    #putEnv("ANDROID_TOOLCHAIN", "/opt/android-ndk-r14b/toolchains/llvm/prebuilt/darwin-x86_64")
+    #direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/"&libFile, "--os:linux -d:android --cpu:arm"])
+
+task "build-ios", "Builds the client for iphone-arm platform":
+  genGodotApi()
+  var libFile = "nim_ios_64.dylib"
+  createDir("_dlls")
+  withDir "src":
+    direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/"&libFile, "--os:macosx -d:ios --cpu:arm64"])
+  libFile = "nim_ios_32.dylib"
+  withDir "src":
+    direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/"&libFile, "--os:macosx -d:ios --cpu:arm"])
+  #withDir "_dll":
+  #  direShell(["lipo", "-create -output nim_ios.dylib nim_ios_64.dylib nim_ios_32.dylib"])
+
 task "clean", "Remove files produced by build":
   removeDir(".nimcache")
   removeDir("src"/".nimcache")

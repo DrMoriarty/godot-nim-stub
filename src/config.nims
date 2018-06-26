@@ -25,7 +25,7 @@ elif defined(android):
     raise newException(OSError,
       "ANDROID_TOOLCHAIN environment variable is necessary for android build")
 
-  const level = $16 # change this to the necessary API level
+  const level = $21 # change this to the necessary API level
   const arch = "arm"
   let sysroot = "--sysroot=\"" & ndk & "/platforms/android-" & level & "/arch-" & arch & "/\""
   switch("passL", sysroot)
