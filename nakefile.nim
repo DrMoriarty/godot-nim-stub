@@ -62,15 +62,13 @@ task "build-android", "Builds the client for android-arm platform":
 
 task "build-ios", "Builds the client for iphone-arm platform":
   genGodotApi()
-  var libFile = "nim_ios_64.dylib"
   createDir("_dlls")
   withDir "src":
-    direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/"&libFile, "--os:macosx -d:ios --cpu:arm64 --threads:off --tlsEmulation:off"])
-  libFile = "nim_ios_32.dylib"
+    direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/nim_ios_64.a", "--os:macosx -d:ios --cpu:arm64 --app:staticlib --threads:off --tlsEmulation:off"])
   withDir "src":
-    direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/"&libFile, "--os:macosx -d:ios --cpu:arm --threads:off --tlsEmulation:off"])
-  #withDir "_dll":
-  #  direShell(["lipo", "-create -output nim_ios.dylib nim_ios_64.dylib nim_ios_32.dylib"])
+    direShell(["nimble", "c", r"../src/stub.nim", r"-o:../_dlls/nim_ios_32.a", "--os:macosx -d:ios --cpu:arm --app:staticlib --threads:off --tlsEmulation:off"])
+  withDir "_dlls":
+    direShell(["lipo", "-create -output nim_ios_fat.a nim_ios_64.a nim_ios_32.a"])
 
 task "clean", "Remove files produced by build":
   removeDir(".nimcache")

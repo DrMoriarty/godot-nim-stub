@@ -15,8 +15,8 @@ Windows.64="res://_dlls/nim_64.dll"
 Windows.32="res://_dlls/nim_32.dll"
 X11.64="res://_dlls/nim_linux_64.so"
 X11.32="res://_dlls/nim_linux_32.so"
-iOS.armv7="res://_dlls/nim_ios_32.a"
-iOS.arm64="res://_dlls/nim_ios_64.a"
+iOS.armv7="res://_dlls/nim_ios_fat.a"
+iOS.arm64="res://_dlls/nim_ios_fat.a"
 
 [dependencies]
 
